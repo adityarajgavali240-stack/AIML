@@ -37,7 +37,7 @@ class ClaudeClient(BaseAIProvider):
         max_tokens: int = DEFAULT_MAX_TOKENS,
     ) -> None:
         """
-        Initialise the Claude client.
+        Initialize the Claude client.
 
         Args:
             api_key:    Anthropic API key.  When *None* the key is read from

@@ -45,7 +45,7 @@ class TestClaudeConfig(unittest.TestCase):
 class TestClaudeClient(unittest.TestCase):
     """Tests for claude_integration.client.ClaudeClient."""
 
-    def _make_client(self, mock_anthropic):
+    def _make_client(self):
         """Helper: create a ClaudeClient with a mocked Anthropic SDK."""
         from claude_integration.client import ClaudeClient
         return ClaudeClient(api_key="fake-key")
@@ -61,7 +61,7 @@ class TestClaudeClient(unittest.TestCase):
     @patch("claude_integration.client.anthropic.Anthropic")
     def test_provider_name(self, mock_anthropic_cls):
         """provider_name returns the expected string."""
-        client = self._make_client(mock_anthropic_cls)
+        client = self._make_client()
         self.assertEqual(client.provider_name, "Anthropic Claude")
 
     @patch("claude_integration.client.anthropic.Anthropic")
@@ -72,7 +72,7 @@ class TestClaudeClient(unittest.TestCase):
             "Neural networks are computing systems."
         )
 
-        client = self._make_client(mock_anthropic_cls)
+        client = self._make_client()
         result = client.complete("What is a neural network?")
 
         self.assertEqual(result, "Neural networks are computing systems.")
@@ -91,7 +91,7 @@ class TestClaudeClient(unittest.TestCase):
             "Sure, here is an example."
         )
 
-        client = self._make_client(mock_anthropic_cls)
+        client = self._make_client()
         messages = [
             {"role": "user", "content": "Hello!"},
             {"role": "assistant", "content": "Hi there!"},
@@ -111,7 +111,7 @@ class TestClaudeClient(unittest.TestCase):
             "Response"
         )
 
-        client = self._make_client(mock_anthropic_cls)
+        client = self._make_client()
         client.complete(
             "Hello", model="claude-3-haiku-20240307", max_tokens=128
         )
@@ -128,7 +128,7 @@ class TestClaudeClient(unittest.TestCase):
         mock_instance = mock_anthropic_cls.return_value
         mock_instance.messages.create.return_value = self._mock_response("OK")
 
-        client = self._make_client(mock_anthropic_cls)
+        client = self._make_client()
         client.complete("ping")
 
         call_kwargs = mock_instance.messages.create.call_args.kwargs
